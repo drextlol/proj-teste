@@ -3,52 +3,33 @@ var html;
 var inp;
 $(".disclamer").hide();
 
-$(document).ready(function(){
-	$(".link").click(function(e){
-		e.preventDefault();
-		if($("body").hasClass("active")){
-			$(".content").animate({
-			    left: "0"
-			}, "slow");
-			$("body").removeClass("active");
-			$(".link").html("Abrir menu");
-		}else{
-			$(".content").animate({
-			    left: "120px"
-			}, "slow");
-			$("body").addClass("active");
-			$(".link").html("Fechar menu");
-		}
-	});
+$(document).ready(function() {
 
-	if(localStorage.getItem("teste") == null){
-		localStorage.setItem("teste", "");
-	}
+    /* Mascaras de campos */
 
-	$('.control').keydown(function(e) {
-		inp = $(".control").val().toLowerCase();
-	    if (e.keyCode == 13) {
-	    	if(inp != ""){
-		    	if(inp == "delete"){
-					localStorage.setItem("teste", "deletado (0)");
-				}else{
-					if(inp == "setar"){
-						localStorage.setItem("teste", "setado (1)");
-					}
-				}
-				window.location.reload();
-			}else{
-				$(".disclamer").hide();
-			}
+    $(function() {
+        /* Mascára dos campos */
+	    $(".date").mask("99/99/9999");
 
-	    }
-	});
+	    var masks = ['(00) 0000-00000', '(00) 0000-00009'],
+	    maskBehavior = function (val, e, field, options) {
+	        return val.length > 14 ? masks[0] : masks[1];
+	    };
 
-	html = localStorage.getItem("teste");
+	    $('.phone').mask(maskBehavior, {
+	        onKeyPress: function (val, e, field, options) {
+	            field.mask(maskBehavior(val, e, field, options), options);
+	        }
+	    });
 
-	if(localStorage.getItem("teste") != "" && localStorage.getItem("teste") != undefined){
-		$(".disclamer").show().html("Seu localStorage foi " + html);
-	}else{
-		$(".disclamer").hide();
-	}
+	    $(".cep").mask("99999-999");
+	    $(".cnpj").mask("99.999.999/9999-99");
+	    $(".cpf").mask("999.999.999-99");
+	    $('.money').mask('000.000.000.000.000,00', { reverse: true });
+	    $('.placa').mask('aaa-9999');
+	    $('.cardcredit').mask('9999.9999.9999.9999');
+	    $('.codecardcredit').mask('9999');
+	    $('.datecardcredit').mask('99/9999');
+	    /* Fim Mascára dos campos */
+    });
 });
